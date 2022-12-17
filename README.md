@@ -6,19 +6,26 @@ The idea behind this project was to create intuitive visualizations of how data 
 
 # Currently Implemented:
 Bubble Sort √
+
 Merge Sort 0.5√
+
 Depth-First Search
+
 Breadth First Search
+
 Minimum Spanning Tree
+
 Dijkstra's Algorithm
+
 A* Algorithm
 
 # Additional Notes:
-Currently to play around with this you have to pull it, have node installed and then run it via 'npm run dev'. A more accessable home is in the works, a link to which will replace this section in the future.
+Currently to play around with this you have to pull it, have node and vite installed and then run it via 'npm run dev'. A more accessable home is in the works, a link to which will replace this section in the future.
 
 # Author(s):
 Carson Magnuson
 
-# Supreme Guidance Supplyers:
+# Supreme Guidance Suppliers:
 Dr. Vitaly Ford
-Alexandr Chebatarev
+
+achebatarev (XOXO)
