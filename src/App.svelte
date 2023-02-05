@@ -1,106 +1,95 @@
 <script lang="ts">
-  import svelteLogo from "./assets/svelte.svg";
-  import Counter from "./lib/Counter.svelte";
-  import { flip } from "svelte/animate";
-  import { bubble } from "svelte/internal";
-  const idea: string = "Sorting Algorithms";
+import svelteLogo from "./assets/svelte.svg";
+import Counter from "./lib/Counter.svelte";
+import { flip } from "svelte/animate";
+import { bubble } from "svelte/internal";
+const idea: string = "Sorting Algorithms";
 
-  var arrBubble = popul([]);
-  var arrMerge = popul([]);
-  var count = 1;
+var arrBubble = popul([]);
+var arrMerge = popul([]);
+var count = 1;
 
-  function popul(
-    arr: { state: string; num: number }[]
-  ): { state: string; num: number }[] {
-    for (let i = 0; i < 40; i++) {
-      let example = {
-        state: "whitesmoke",
-        num: Math.floor(Math.random() * 50 + 1),
-      };
-      arr.push(example);
-    }
-    return arr;
-  }
+function popul(
+		arr: { state: string; num: number }[]
+	      ): { state: string; num: number }[] {
+	for (let i = 0; i < 40; i++) {
+		let example = {
+state: "whitesmoke",
+       num: Math.floor(Math.random() * 50 + 1),
+		};
+		arr.push(example);
+	}
+	return arr;
+}
 
-  function sortBubble() {
-    var i = 0;
-    var j = 0;
+function sortBubble() {
+	var i = 0;
+	var j = 0;
 
-    function task() {
-      count++;
-      console.log(count);
-      if (j >= arrBubble.length - i - 1) {
-        arrBubble[j].state = "#8fbc8f";
-        j = 0;
-        i++;
-      }
+	function task() {
+		count++;
+		console.log(count);
+		if (j >= arrBubble.length - i - 1) {
+			arrBubble[j].state = "#8fbc8f";
+			j = 0;
+			i++;
+		}
 
-      if (i < arrBubble.length) {
-        if (arrBubble[j].num > arrBubble[j + 1].num) {
-          var temp = arrBubble[j];
-          arrBubble[j] = arrBubble[j + 1];
-          arrBubble[j + 1] = temp;
-          console.log(arrBubble);
-        } else {
-          arrBubble[j].state = "whitesmoke";
-          arrBubble[j + 1].state = "crimson";
-        }
-        j++;
-        setTimeout(task, 1);
-      } else {
-        arrBubble[0].state = "#8fbc8f";
-      }
-    }
-    task();
-  }
+		if (i < arrBubble.length) {
+			if (arrBubble[j].num > arrBubble[j + 1].num) {
+				var temp = arrBubble[j];
+				arrBubble[j] = arrBubble[j + 1];
+				arrBubble[j + 1] = temp;
+				console.log(arrBubble);
+			} else {
+				arrBubble[j].state = "whitesmoke";
+				arrBubble[j + 1].state = "crimson";
+			}
+			j++;
+			setTimeout(task, 1);
+		} else {
+			arrBubble[0].state = "#8fbc8f";
+		}
+	}
+	task();
+}
 
-  async function sortMerge() {
-    arrMerge = await rC(arrMerge);
+async function mergeSortPointers(arr: any[], start: number, end: number, delay: number): Promise<void> {
+	if (start >= end) return;
 
-    function rC(
-      a: { state: string; num: number }[]
-    ): Promise<{ state: string; num: number }[]> {
-      return new Promise((resolve) => {
-        setTimeout(async () => {
-          if (a.length == 1) {
-            resolve(a);
-          }
+	const middle = Math.floor((start + end) / 2);
 
-          let aM: { state: string; num: number }[] = [];
-          let lA = await rC(a.slice(0, Math.floor(a.length / 2))); //2
-          let rA = await rC(a.slice(Math.floor(a.length / 2))); //4
+	await mergeSortPointers(arr, start, middle, delay);
+	await mergeSortPointers(arr, middle + 1, end, delay);
 
-          arrMerge = lA.concat(rA);
-          let l = 0;
-          let r = 0;
+	const temp = [];
+	let leftIndex = start;
+	let rightIndex = middle + 1;
 
-          while (l < lA.length || r < rA.length) {
-            // console.log('l: ' + lA[l].num + ". r: " + rA[r].num);
-            // console.log('lArray: ' + lA.length + ". rArray: " + rA.length);
+	for (let i = start; i <= end; i++) {
+	
+		await new Promise(resolve => setTimeout(resolve, delay));
+		if (leftIndex <= middle && (rightIndex > end || arr[leftIndex].num < arr[rightIndex].num)) {
+		
+			temp[i] = arr[leftIndex];
+			leftIndex++;
+		} else {
+		
+			temp[i] = arr[rightIndex];
+			rightIndex++;
+		}
+	}
 
-            // console.log(lA[l].num);
-            // console.log(rA[r].num);
+	for (let i = start; i <= end; i++) {
+		arr[i] = temp[i];
+		arr[i].state = "#8fbc8f"
+	}	
+	arrMerge = arrMerge
+}
+function mergeSort() {
+	mergeSortPointers(arrMerge, 0, arrMerge.length - 1, 10)
 
-            if (l == lA.length) {
-              aM.push(rA[r]);
-              r++;
-            } else if (r == rA.length) {
-              aM.push(lA[l]);
-              l++;
-            } else if (lA[l].num >= rA[r].num) {
-              aM.push(rA[r]);
-              r++;
-            } else if (rA[r].num >= lA[l].num) {
-              aM.push(lA[l]);
-              l++;
-            }
-          }
-          console.log("new aM: " + aM);
-          resolve(aM);
-        }, 30);
-      });
-    }
-  }
+}
 </script>
 
 <main>
@@ -128,7 +117,7 @@
       {/each}
     </div>
     <div class="card">
-      <button on:click={sortMerge}>Merge Sort</button>
+      <button on:click={mergeSort}>Merge Sort</button>
     </div>
   </div>
 
