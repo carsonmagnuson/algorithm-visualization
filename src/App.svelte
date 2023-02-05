@@ -7,6 +7,7 @@ const idea: string = "Sorting Algorithms";
 
 var arrBubble = popul([]);
 var arrMerge = popul([]);
+var arrGravity = popul([]);
 var count = 1;
 
 function popul(
@@ -86,9 +87,33 @@ async function mergeSortPointers(arr: any[], start: number, end: number, delay: 
 	}	
 	arrMerge = arrMerge
 }
+
+async function gravitySortObjects(arr: any[], delay: number): Promise<void> {
+	const max = Math.max(...arr.map(item => item.num));
+	const min = Math.min(...arr.map(item => item.num));
+	const range = max - min + 1;
+	const count = Array(range).fill(0);
+
+	for (let i = 0; i < arr.length; i++) {
+		count[arr[i].num - min]++;
+	}
+
+	let index = 0;
+	for (let i = 0; i < range; i++) {
+		await new Promise(resolve => setTimeout(resolve, delay));
+		for (let j = 0; j < count[i]; j++) {
+			arr[index++] = { state: '#8fbc8f', num: i + min };
+			arrGravity = arrGravity
+		}
+	}
+}
+
 function mergeSort() {
 	mergeSortPointers(arrMerge, 0, arrMerge.length - 1, 10)
 
+}
+function gravitySort() {
+	gravitySortObjects(arrGravity, 100)
 }
 </script>
 
@@ -118,6 +143,19 @@ function mergeSort() {
     </div>
     <div class="card">
       <button on:click={mergeSort}>Merge Sort</button>
+    </div>
+  </div>
+  <div class="card" style="display: inline-block">
+    <div>
+      {#each arrGravity as num}
+        <div
+          style="height: {num.num}px;width: 10px;background-color: {num.state};display:
+          inline-block;"
+        />
+      {/each}
+    </div>
+    <div class="card">
+      <button on:click={gravitySort}>Gravity Sort</button>
     </div>
   </div>
 
