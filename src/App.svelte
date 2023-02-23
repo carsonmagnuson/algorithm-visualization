@@ -4,6 +4,7 @@ import Counter from "./lib/Counter.svelte";
 import { flip } from "svelte/animate";
 import { bubble } from "svelte/internal";
 const idea: string = "Sorting Algorithms";
+let speed = 25;
 
 var edition = popul([]);
 var arrBubble = [];
@@ -49,6 +50,7 @@ function sortBubble(delay: number) {
 				arrBubble[j + 1].state = "crimson";
 			}
 			j++;
+			console.log(delay)
 			setTimeout(task, delay);
 		} else {
 			arrBubble[0].state = "#8fbc8f";
@@ -111,18 +113,21 @@ async function gravitySortObjects(arr: any[], delay: number): Promise<void> {
 }
 
 function mergeSort() {
-	mergeSortPointers(arrMerge, 0, arrMerge.length - 1, 10)
-
+	mergeSortPointers(arrMerge, 0, arrMerge.length - 1, (50 - speed) / 1.8)
 }
 function gravitySort() {
-	gravitySortObjects(arrGravity, 100)
+	gravitySortObjects(arrGravity, 50 - speed)
 }
 function bubbleSort() {
-	sortBubble(1)
+	sortBubble(1000)
 }
 </script>
 
 <main>
+<p> {speed} </p>
+<div>
+  <input type="range" min="1" max="50" id="delay" bind:value={speed}>
+</div>
   <h1>{idea}</h1>
   <div class="card" style="display: inline-block">
     <div>
