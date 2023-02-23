@@ -5,9 +5,13 @@ import { flip } from "svelte/animate";
 import { bubble } from "svelte/internal";
 const idea: string = "Sorting Algorithms";
 
-var arrBubble = popul([]);
-var arrMerge = popul([]);
-var arrGravity = popul([]);
+var edition = popul([]);
+var arrBubble = [];
+edition.forEach(val => arrBubble.push(Object.assign({}, val)));
+var arrMerge = []; 
+edition.forEach(val => arrMerge.push(Object.assign({}, val)));
+var arrGravity = []; 
+edition.forEach(val => arrGravity.push(Object.assign({}, val)));
 var count = 1;
 
 function popul(
@@ -23,13 +27,12 @@ state: "whitesmoke",
 	return arr;
 }
 
-function sortBubble() {
+function sortBubble(delay: number) {
 	var i = 0;
 	var j = 0;
 
-	function task() {
+	function task(delay: number) {
 		count++;
-		console.log(count);
 		if (j >= arrBubble.length - i - 1) {
 			arrBubble[j].state = "#8fbc8f";
 			j = 0;
@@ -41,18 +44,17 @@ function sortBubble() {
 				var temp = arrBubble[j];
 				arrBubble[j] = arrBubble[j + 1];
 				arrBubble[j + 1] = temp;
-				console.log(arrBubble);
 			} else {
 				arrBubble[j].state = "whitesmoke";
 				arrBubble[j + 1].state = "crimson";
 			}
 			j++;
-			setTimeout(task, 1);
+			setTimeout(task, delay);
 		} else {
 			arrBubble[0].state = "#8fbc8f";
 		}
 	}
-	task();
+	task(delay);
 }
 
 async function mergeSortPointers(arr: any[], start: number, end: number, delay: number): Promise<void> {
@@ -115,6 +117,9 @@ function mergeSort() {
 function gravitySort() {
 	gravitySortObjects(arrGravity, 100)
 }
+function bubbleSort() {
+	sortBubble(1)
+}
 </script>
 
 <main>
@@ -129,7 +134,7 @@ function gravitySort() {
       {/each}
     </div>
     <div class="card">
-      <button on:click={sortBubble}>Bubble Sort</button>
+      <button on:click={bubbleSort}>Bubble Sort</button>
     </div>
   </div>
   <div class="card" style="display: inline-block">
